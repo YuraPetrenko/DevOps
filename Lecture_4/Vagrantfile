@@ -1,12 +1,34 @@
 Vagrant.configure("2") do |config|
-  config.vm.define "webserver" do |vm|
-    vm.vm.box = "bento/ubuntu-24.04"
-    vm.vm.hostname = "webserver-01"
-    vm.vm.network = "public_network"
-    vm.vm.provider "virtualbox" do |vb|
-      vb.memory = "1024"
-      vb.cpus = 1
-    end
-    vm.vm.synced_folder "Lecture_4/SharedFolder", "/home/user/shared"
+  config.vm.define "webserver-01" do |vm1|
+    vm1.vm.box = "bento/ubuntu-22.04"
+    vm1.vm.hostname = "webserver-01"
+    vm1.vm.network "public_network", type: "dhcp", bridge: "Intel(R) Ethernet Connection (4) I219-LM"
+    vm1.vm.provision "shell", inline: <<-SHELL
+           apt-get update
+           mkdir newfolder
+           SHELL
+    vm1.vm.synced_folder "./SharedFolder", "/shared"
   end
+
+  config.vm.define "webserver-02" do |vm2|
+      vm2.vm.box = "bento/ubuntu-22.04"
+      vm2.vm.hostname = "webserver-02"
+      vm2.vm.network "private_network", ip: "192.168.22.46", bridge: "Intel(R) Ethernet Connection (4) I219-LM"
+      vm2.vm.synced_folder "./SharedFolder", "/shared"
+    end
+
+
+config.vm.define "webserver-03" do |vm3|
+      vm3.vm.box = "bento/ubuntu-22.04"
+      vm3.vm.hostname = "webserver-03"
+      vm3.vm.network "public_network", type: "bridge", bridge: "Intel(R) Dual Band Wireless-AC 8265", ip: "192.168.2.222"
+      vm3.vm.provision "shell", inline: <<-SHELL
+             apt-get update
+             mkdir newfolder
+             SHELL
+     vm3.vm.synced_folder "./SharedFolderForVm3", "/shared"
+    end
+
+
+
 end
