@@ -1,6 +1,0 @@
-*.class
-target/
-*.iml
-.idea/
-.idea
-.gitignore
