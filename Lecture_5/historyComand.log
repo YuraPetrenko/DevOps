@@ -1,0 +1,17 @@
+t -v
+    3  sudo ssh-keygen
+    4  ssh-keygen
+    5  ls -la  ~/.ssh/
+    6  vi  ~/.ssh/id_rsa.pub
+    7  git remote -v
+    8  git clone origin git@github.com:YuraPetrenko/DevOps.git
+    9  git clone git@github.com:YuraPetrenko/DevOps.git
+   10  dir
+   11  cd DevOps/
+   12  dir
+   13  cd Lecture_5
+   14  dir
+   15  touch "historyComand.log"
+   16  ls -la
+   17  history
+
