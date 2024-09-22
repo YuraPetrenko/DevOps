@@ -1,0 +1,10 @@
+Vagrant.configure("2") do |config|
+  config.vm.define "webserver-01" do |vm|
+    vm.vm.box = "ubuntu/trusty64"
+    vm.vm.hostname = "webserver-01"
+    vm.vm.network "public_network"
+ #   vm.vm.provision "shell", path: "./scripts/install.sh"
+
+  end
+
+end

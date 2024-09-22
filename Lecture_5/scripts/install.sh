@@ -33,4 +33,3 @@ for package in "${packages[@]}"; do
             echo "Не знайдено команду для виведення версії $package" >> "$LOG_FILE"
             ;;
     esac
-done
