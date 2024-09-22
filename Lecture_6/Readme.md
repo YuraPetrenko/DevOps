@@ -1,62 +1,65 @@
-# Virtualization/VBox
+### Nginx - встановлення та налаштування. PPA репозиторій.
 
-## Установка віртуалбокс. Робота з віртуальною машиною. 
+`vagrant@webserver-01:~$ nginx -v
+nginx version: nginx/1.24.0 (Ubuntu)`
+
+`sudo add-apt-repository ppa:nginx/stable
+sudo apt update`
+
+#### Попередження :
+`The repository 'https://ppa.launchpadcontent.net/nginx/stable/ubuntu mantic Release' does not have a Relea
+se file.`
+
+### Тому я повернувся назад
+
+`sudo add-apt-repository --remove ppa:nginx/stable
+sudo apt update`
 
 
-### Налаштування параметрів віртуальної машини
+###Встановлення nginx
+`vagrant@webserver-01:~$ apt-cache policy nginx
+nginx:                       
+Installed: 1.4.6-1ubuntu3.9
+Candidate: 1.4.6-1ubuntu3.9
 
-![Параметри віртуальної машини]( Screenshots/TestVM.PNG)
+###Скріпт дати та часу
 
-### Тестування зрізу снепшоту
-#### Створення папки та файла у цій папці. Створення снепшоту.
-![Створення папки та файла цу цій папці. Створення снепшоту.]( Screenshots/TestSnapShot1.PNG)
+### Скріпт файл
+`#!/bin/bash
 
-#### Відновлення зрізу.
-#### При відновленні зникла папка та файл в ньому.
-![Створення папки та файла цу цій папці. Створення снепшоту.]( Screenshots/TestSnapShot2.PNG)
+LOG_FILE="/var/log/dateTimeCounter.log"
+
+_while true; do
+echo "$(date) $(time) " >> $LOG_FILE
+sleep 60
+done`
+### Файл сервісу
+`[Unit]
+Description=Simple script to log date and time every minute
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/opt/dateTimeCounter.sh
+ExecReload=/bin/kill -HUP $MAINPID
+Restart=on-failure
+RestartSec=5
 
 
-#### Збільшення розміру диску віртуальної машии VirtualBox
-Знайдіть шлях до VBoxManage.exe: Зазвичай він знаходиться в папці встановлення VirtualBox (наприклад, C:\Program Files\Oracle\VirtualBox).
-Відкрийте командний рядок:
-Натисніть Win + R, введіть cmd і натисніть Enter.
-Виконайте команду:
-VBoxManage modifyhd "шлях_до_віртуального_диску.vdi" --resize новий_розмір_в_мегабайтах
-Замініть шлях_до_віртуального_диску.vdi на фактичний шлях до вашого файлу віртуального диска, а новий_розмір_в_мегабайтах на бажаний розмір у мегабайтах.
-Приклад:
+[Install]
+WantedBy=multi-user.target`
 
-VBoxManage modifyhd "D:\VIRTUALBOX\TestVM\TestVM.vdi" --resize 30000
+Вивід дати та часу кожну хвилину
 
-![Зміна розміру диску віртуальної машини.]( Screenshots/resizeHddVdi.PNG)
-#### Результат зміни розміру диска.
-![Результат зміни розміру диску віртуальної машини.]( Screenshots/resizeHddVdiResult.PNG)
-#### Команди як розширюють додаткоемісце призбільшенні віртуального диску у віртуальній машині у системі ubuntu.
-#####sudo apt update
-#####sudo apt install gparted
-#####sudo parted -l
-#####sudo lvextend -l +100%FREE /dev/mapper/ubuntu--vg-ubuntu--lv
-#####sudo resize2fs /dev/mapper/ubuntu--vg-ubuntu--lv
-#####df -h
-#### До розширення
-![Перегляд файлової розмітки убунту]( Screenshots/HddAfterResize.PNG)
-#### Після розширення
-![Розширення вільного місця у убунту]( Screenshots/currentHddSize.PNG)
 
-### Сттворення спільної папки у ubuntu ступу з windows
-#### sudo apt update
-#### sudo apt install samba
-#### sudo chmod 777 /home/bald2003/ShareFolder 
-### Для надання доступу до папки редагуемо файл 
-##### sudo nano /etc/samba/smb.conf
-#####[shared]
-#####comment = опис_папки
-#####path = /home/ваш_користувач/shared
-#####browsable = yes
-#####writable = yes
-#####guest ok = yes
-#####read only = no
-#####create mask = 0777
-#####directory mask = 0777
+![Вивід дати та часу кожну хвилину]( Screenshots/lecture_6_log.PNG)
 
-#Поки не вийшло розшарити для вынди папку в убунту. Ще буду гратися.
+### Закриття доступу до 22 порту усім окрім озаданого айпі
 
+![Вивід дати та часу кожну хвилину]( Screenshots/ufw.PNG)
+
+
+### Встановлення та налаштування fail2ban для ssh
+
+
+![<Блокування айпі на 5 спробі - fail2ban для ssh]( Screenshots/fail2ban.PNG)
