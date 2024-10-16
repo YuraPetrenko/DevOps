@@ -18,7 +18,7 @@ echo "Створено базу даних $DB_NAME"
 # Створення користувача та надання йому прав
 sudo mysql <<EOF
 CREATE USER '$DB_USER'@'$user_host' IDENTIFIED BY '$DB_PASSWORD';
-GRANT SELECT, INSERT, UPDATE, CREATE TEMPORARY TABLES ON $DB_NAME.* TO '$DB_USER'@'localhost';
+GRANT SELECT, INSERT, UPDATE, CREATE TEMPORARY TABLES ON $DB_NAME.* TO '$DB_USER'@'$user_host';
 FLUSH PRIVILEGES;
 EOF
 echo "Створено користувача $DB_USER"
@@ -27,7 +27,7 @@ sudo mysql $DB_NAME <<EOF
 
 # Створення таблиці "Institutions"
 CREATE TABLE IF NOT EXISTS Institutions (
-    id INT AUTO_INCREMENT PRIMARY KEY,
+    institution_id INT AUTO_INCREMENT PRIMARY KEY,
     institution_name VARCHAR(255),
     institution_type VARCHAR(255),
     address VARCHAR(255)
@@ -43,40 +43,39 @@ CREATE TABLE IF NOT EXISTS Institutions (
 
 # Створення таблиці "Classes"
 CREATE TABLE IF NOT EXISTS Classes (
-    id INT AUTO_INCREMENT PRIMARY KEY,
+    class_id INT AUTO_INCREMENT PRIMARY KEY,
     class_name VARCHAR(255),
     institution_id INT,
-    FOREIGN KEY (institution_id) REFERENCES Institutions(id),
-    Institutions_direction VARCHAR(255);
+    FOREIGN KEY (institution_id) REFERENCES Institutions(institution_id),
+    Institutions_direction VARCHAR(255)
 
 );
 
 # Внесення даних до таблиці "Classes"
-  INSERT INTO Classes (class_name, institution_id, Institutions direction) VALUES
-    ('Середній', '1', 'Biology and Chemistry'),
-    ('Початковий', '2', 'Biology and Chemistry'),
-    ('Магістратура', '3', 'Mathematics');
-
+  INSERT INTO Classes (class_name,institution_id,Institutions_direction) VALUES
+    ('Середній',1,'Biology and Chemistry'),
+    ('Початковий',2,'Biology and Chemistry'),
+    ('Магістратура',3,'Mathematics');
 
 # Створення таблиці "Children"
 CREATE TABLE IF NOT EXISTS Children (
     child_id INT AUTO_INCREMENT PRIMARY KEY,
     first_name VARCHAR(255),
     last_name VARCHAR(255),
-    birth_date INT,
+    birth_date DATE,
     year_of_entry INT,
     age INT,
     institution_id INT,
-    FOREIGN KEY (institution_id) REFERENCES Institutions(id),
+    FOREIGN KEY (institution_id) REFERENCES Institutions(institution_id),
     class_id INT,
-    FOREIGN KEY (class_id) REFERENCES Classes(id);
+    FOREIGN KEY (class_id) REFERENCES Classes(class_id)
 );
 
 # Внесення даних до таблиці "Children"
   INSERT INTO Children (first_name, last_name, birth_date, year_of_entry, age, institution_id, class_id) VALUES
-    ('Іван', 'Усенко', '13-11-2005', '2020', '19', '1', '1'),
-    ('Сева', 'Руденко', '12-10-2005', '2019', '12', '2', '2'),
-    ('Василь', 'Потапенко', '22-08-2005', '2020', '17', '3', '3');
+    ('Іван','Усенко','2005-11-13',2020,19,1,1),
+    ('Сева','Руденко','2009-10-12',2019,15,2,2),
+    ('Василь','Потапенко','2005-08-22',2020,19,3,3);
 
 # Створення таблиці "Parents"
 CREATE TABLE IF NOT EXISTS Parents (
@@ -85,7 +84,7 @@ CREATE TABLE IF NOT EXISTS Parents (
     last_name VARCHAR(255),
     child_id INT,
     FOREIGN KEY (child_id) REFERENCES Children(child_id),
-    tuition_fee INT;
+    tuition_fee INT
 );
 
 # Внесення даних до таблиці "Parents"
@@ -95,9 +94,3 @@ CREATE TABLE IF NOT EXISTS Parents (
     ('Анна', 'Потапенко', '3', '1500');
 
 EOF
-
-
-
-
-
-echo "База даних '$DB_NAME' з таблицями та даними створена успішно."
