@@ -1,3 +1,7 @@
+Створення бази та внесення даних через скрипт у вагранті.`
+
+`![Створення бази та додавання даних]( Screenshots/createDataBaseAndInsertData.PNG)
+
 `SELECT
 Children.first_name AS ChildName,
 Institutions.institution_name AS InstitutionName,
