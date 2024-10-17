@@ -1,0 +1,11 @@
+Vagrant.configure("2") do |config|
+  config.vm.define "mongodb-server" do |vm|
+    config.vm.box = "bento/ubuntu-23.10-arm64"
+    vm.vm.hostname = "mongodb-server"
+    vm.vm.network "public_network"
+    vm.vm.provision "shell", path: "./scripts/install.sh"
+
+
+  end
+
+end
