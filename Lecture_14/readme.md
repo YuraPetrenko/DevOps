@@ -44,17 +44,23 @@ roles: [ { role: "readWrite", db: "gymDatabase" } ]
 
 ##Знайдіть всіх клієнтів віком понад 30 років
 
+![Створення бази та додавання даних]( Screenshots/clients.PNG)
+
 `db.Clients.find({ age: { $eq: 30 } }, { name: 1, _id: 0 })`
 
 ![Створення бази та додавання даних]( Screenshots/select_1.PNG)
 
 ##Перелічіть тренування із середньою складністю
 
+![Створення бази та додавання даних]( Screenshots/clients.PNG)
+
 `db.Workouts.find({ difficulty: "середній" }, { description: 1, _id: 0 })`
 
-![Створення бази та додавання даних]( Screenshots/select_2.PNG)
+![Створення бази та додавання даних]( Screenshots/workouts.PNG)
 
 ##Покажіть інформацію про членство клієнта з певним client_id
+
+![Створення бази та додавання даних]( Screenshots/meber.PNG)
 
 `db.Memberships.find({ client_id: "C001" }, { type: 1, _id: 0 })`
 
