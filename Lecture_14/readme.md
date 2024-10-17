@@ -44,18 +44,18 @@ roles: [ { role: "readWrite", db: "gymDatabase" } ]
 
 ##Знайдіть всіх клієнтів віком понад 30 років
 
-`db.Clients.insertOne({ "client_id": "C001", "name": "Іван Петров", "age": 30, "email": "ivan.petrov@example.com" })`
-
-
-##Знайдіть всіх клієнтів віком понад 30 років
-
 `db.Clients.find({ age: { $eq: 30 } }, { name: 1, _id: 0 })`
+
+![Створення бази та додавання даних]( Screenshots/select_1.PNG)
 
 ##Перелічіть тренування із середньою складністю
 
 `db.Workouts.find({ difficulty: "середній" }, { description: 1, _id: 0 })`
 
+![Створення бази та додавання даних]( Screenshots/select_2.PNG)
 
-##Покажіть інформацію про членство клієнта з певним client_id`
+##Покажіть інформацію про членство клієнта з певним client_id
 
 `db.Memberships.find({ client_id: "C001" }, { type: 1, _id: 0 })`
+
+![Створення бази та додавання даних]( Screenshots/select_3.PNG)
