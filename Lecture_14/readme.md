@@ -52,11 +52,11 @@ roles: [ { role: "readWrite", db: "gymDatabase" } ]
 
 ##Перелічіть тренування із середньою складністю
 
-![Створення бази та додавання даних]( Screenshots/clients.PNG)
+![Створення бази та додавання даних]( Screenshots/workouts.PNG)
 
 `db.Workouts.find({ difficulty: "середній" }, { description: 1, _id: 0 })`
 
-![Створення бази та додавання даних]( Screenshots/workouts.PNG)
+![Створення бази та додавання даних]( Screenshots/select_2.PNG)
 
 ##Покажіть інформацію про членство клієнта з певним client_id
 
