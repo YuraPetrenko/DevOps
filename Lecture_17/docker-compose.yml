@@ -3,7 +3,7 @@ services:
   web:
     image: nginx:latest
     ports:
-      - "8010-8020:80"
+      - "0:80"
     volumes:
      - ./web_data:/usr/share/nginx/html
     networks:
