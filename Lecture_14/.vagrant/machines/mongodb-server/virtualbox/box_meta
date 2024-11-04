@@ -1,1 +1,1 @@
-{"name":"bento/ubuntu-23.10","version":"202402.01.0","provider":"virtualbox","directory":"boxes/bento-VAGRANTSLASH-ubuntu-23.10/202402.01.0/amd64/virtualbox"}
+{"name":"ubuntu/focal64","version":"20240821.0.1","provider":"virtualbox","directory":"boxes/ubuntu-VAGRANTSLASH-focal64/20240821.0.1/virtualbox"}

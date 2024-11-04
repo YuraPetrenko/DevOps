@@ -1,0 +1,28 @@
+version: "3.9"
+services:
+  web:
+    image: nginx:latest
+    ports:
+      - "8010-8020:80"
+    volumes:
+     - ./web_data:/usr/share/nginx/html
+    networks:
+     - appnet
+  dbPostgres:
+   image: postgres:latest
+   environment:
+     POSTGRES_PASSWORD: example
+   volumes:
+    - db_data:/var/lib/postgresql/data
+   networks:
+    - appnet
+  dbRedis:
+    image: redis:latest
+    networks:
+      - appnet
+
+networks:
+  appnet:
+
+volumes:
+  db_data:

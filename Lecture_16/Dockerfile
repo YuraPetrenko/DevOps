@@ -1,12 +1,4 @@
-FROM openjdk
-
-COPY . /java
-
-WORKDIR /java
-
-EXPOSE 8001
-
-RUN javac Main.java
-
-CMD ["java", "Main"]
-
+FROM Lecture_17.php:7.2-apache
+WORKDIR /var/www/html
+COPY . /var/www/html
+EXPOSE 80
