@@ -8,7 +8,8 @@
 
 Створення секьюр групи з доступом до ssh та HTTP із зовні
 
-![Результат роботи скрипта]( Screenshots/security group.PNG)
+
+![Результат роботи скрипта]( Screenshots/security_group.PNG)
 
 Створення віртуальної машини з зовнішнім білим айпі
 
@@ -16,7 +17,7 @@
 
 Підключення до віртуальної машиги по SSH
 
-![Результат роботи скрипта]( Screenshots/coonect to mashine.PNG)
+![Результат роботи скрипта]( Screenshots/coonect_to_mashine.PNG)
 
 
 
