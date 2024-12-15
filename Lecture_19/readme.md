@@ -231,9 +231,6 @@ root@master:/home/ubuntu# kubectl apply -f pvc.yaml
 persistentvolumeclaim/nginx-pvc created`
 
 
-
-
-
 Подивитися чи створився присистем волум 
 
 `root@master:/home/ubuntu# kubectl get persistentvolume
@@ -376,3 +373,5 @@ Session Affinity:         None
 External Traffic Policy:  Cluster
 Events:                   <none>
 
+
+![Результат роботи скрипта]( Screenshots/kubectl.PNG)
