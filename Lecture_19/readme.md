@@ -242,7 +242,7 @@ nginx-pv   1Gi        RWO            Retain           Available                 
 
 Створення деплою для нджинкса 
 
-`root@master:/home/ubuntu# cat > deployment.yaml <<EOF
+root@master:/home/ubuntu# cat > deployment.yaml <<EOF
 > apiVersion: apps/v1
 > kind: Deployment
 > metadata:
@@ -272,7 +272,7 @@ nginx-pv   1Gi        RWO            Retain           Available                 
 >           claimName: nginx-pvc
 > EOF
 root@master:/home/ubuntu# kubectl apply -f deployment.yaml
-deployment.apps/nginx-deployment created`
+deployment.apps/nginx-deployment created
 
 
 створенн кластер айпі для доступу до подів
@@ -355,7 +355,9 @@ nginx-service   NodePort   10.105.90.171   <none>        80:30007/TCP   14h`
 
 Стан сервісу але обовязково указувати неймспейс 
 
-`root@master:/home/ubuntu# kubectl describe svc nginx-service -n my-nginx-app
+`root@master:/home/ubuntu# kubectl describe svc nginx-service -n my-nginx-app`
+
+
 Name:                     nginx-service
 Namespace:                my-nginx-app
 Labels:                   <none>
@@ -372,5 +374,5 @@ NodePort:                 <unset>  30007/TCP
 Endpoints:                192.168.235.165:80,192.168.235.166:80,192.168.235.167:80
 Session Affinity:         None
 External Traffic Policy:  Cluster
-Events:                   <none>`
+Events:                   <none>
 
