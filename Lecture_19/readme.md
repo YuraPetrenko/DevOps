@@ -164,42 +164,47 @@ rm -f /etc/kubernetes/pki/ca.crt
 
 Створення нейм спейсу lecture-19-space у майстрі  через ямл файл і активація чи задія цього файла
 
-`root@master:/home/ubuntu# cat > namespace.yaml << EOF
-> apiVersion: v1
-> kind: Namespace
-> metadata:
->   name: my-nginx-app
-> EOF
+
+`
+root@master:/home/ubuntu# cat > namespace.yaml << EOF
+apiVersion: v1
+kind: Namespace
+metadata:
+name: my-nginx-app
+EOF
 root@master:/home/ubuntu# ls
 namespace.yaml
 root@master:/home/ubuntu# kubectl apply -f namespace.yaml
-namespace/my-nginx-app created
-root@master:/home/ubuntu# kubectl get namespaces
+namespace/my-nginx-app created`
+
+
+
+`root@master:/home/ubuntu# kubectl get namespaces
 NAME              STATUS   AGE
 default           Active   174m
 kube-node-lease   Active   174m
 kube-public       Active   174m
 kube-system       Active   174m
-my-nginx-app      Active   9s
-root@master:/home/ubuntu#`
+my-nginx-app      Active   9s`
+
 
 Створення пристем волума 
 
 `root@master:/home/ubuntu# cat > pv.yaml <<EOF
-> apiVersion: v1
-> kind: PersistentVolume
-> metadata:
->   name: nginx-pv
-> spec:
->   capacity:
->     storage: 1Gi
->   accessModes:
->     - ReadWriteOnce
->   persistentVolumeReclaimPolicy: Retain
->   hostPath:
->     path: /mnt/data
-> EOF
-root@master:/home/ubuntu# kubectl apply -f pv.yaml
+ apiVersion: v1
+ kind: PersistentVolume
+ metadata:
+   name: nginx-pv
+ spec:
+   capacity:
+     storage: 1Gi
+  accessModes:
+    - ReadWriteOnce persistentVolumeReclaimPolicy: Retain
+   hostPath:
+     path: /mnt/data
+ EOF
+`
+`root@master:/home/ubuntu# kubectl apply -f pv.yaml
 persistentvolume/nginx-pv created`
 
  Створення каталогу для присистем волума та надання прав на каталог на воркер ноде де бутуть запускатися поди
