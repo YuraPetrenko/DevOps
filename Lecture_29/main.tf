@@ -89,6 +89,7 @@ resource "aws_instance" "public_instance" {
   instance_type   = var.instance_type
   subnet_id       = aws_subnet.public_subnet.id
   vpc_security_group_ids = [aws_security_group.my_sg.id]
+  iam_instance_profile   = aws_iam_instance_profile.s3_instance_profile.name
 
   key_name        = var.key_name
   user_data       = file("init.sh")
@@ -113,6 +114,8 @@ resource "aws_instance" "private_instance" {
   }
 }
 
+# Створення бази для сберішання стейтів оточення
+
 resource "aws_dynamodb_table" "state_lock" {
   name           = "state-lock"         # Назва таблиці
   billing_mode   = "PAY_PER_REQUEST"    # Оплата за запити (Free Tier-friendly)
@@ -127,7 +130,12 @@ resource "aws_dynamodb_table" "state_lock" {
     Environment = "Terraform"
     Purpose     = "State Lock"
   }
+  lifecycle {
+    prevent_destroy = true   # Запобігає видаленню таблиці
+  }
 }
+
+# Створення бакета у якому буде сберіггатися база
 
 terraform {
   backend "s3" {
@@ -137,4 +145,66 @@ terraform {
     dynamodb_table = "state-lock"              # Назва створеної таблиці DynamoDB
     encrypt        = true                      # Увімкнення шифрування
   }
+}
+
+
+# Terraform код для IAM Role з доступом до S3
+
+# Створення IAM ролі
+resource "aws_iam_role" "s3_access_role" {
+  name               = "S3AccessRole"
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect = "Allow",
+        Principal = {
+          Service = "ec2.amazonaws.com"  # Дозвіл для EC2
+        },
+        Action = "sts:AssumeRole"
+      }
+    ]
+  })
+
+  tags = {
+    Environment = "Production"
+    Purpose     = "Access S3 bucket"
+  }
+}
+
+# Політика доступу до S3
+resource "aws_iam_policy" "s3_access_policy" {
+  name        = "S3AccessPolicy"
+  description = "Policy to allow access to specific S3 bucket"
+  policy      = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect   = "Allow",
+        Action   = [
+          "s3:ListBucket",     # Доступ до списку бакета
+          "s3:GetObject",      # Отримання об'єктів
+          "s3:PutObject",      # Завантаження об'єктів
+          "s3:DeleteObject"    # Видалення об'єктів
+        ],
+        Resource = [
+          "arn:aws:s3:::your-bucket-name",       # Назва S3-бакета
+          "arn:aws:s3:::your-bucket-name/*"     # Об'єкти бакета
+        ]
+      }
+    ]
+  })
+}
+
+# Прикріплення політики до ролі
+resource "aws_iam_role_policy_attachment" "s3_policy_attachment" {
+  role       = aws_iam_role.s3_access_role.name
+  policy_arn = aws_iam_policy.s3_access_policy.arn
+}
+
+
+# Instance Profile потрібен для прив'язки IAM ролі до EC2.
+resource "aws_iam_instance_profile" "s3_instance_profile" {
+  name = "S3InstanceProfile"
+  role = aws_iam_role.s3_access_role.name
 }
