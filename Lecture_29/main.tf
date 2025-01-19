@@ -182,15 +182,13 @@ resource "aws_iam_policy" "s3_access_policy" {
       {
         Effect   = "Allow",
         Action   = [
-          "s3:ListBucket",     # Доступ до списку бакета
-          "s3:GetObject",      # Отримання об'єктів
-          "s3:PutObject",      # Завантаження об'єктів
-          "s3:DeleteObject"    # Видалення об'єктів
+          "s3:ListAllMyBuckets",  # Дозвіл на перегляд списку всіх бакетів
+          "s3:ListBucket",        # Дозвіл на перегляд вмісту бакета
+          "s3:GetObject",         # Отримання об'єктів
+          "s3:PutObject",         # Завантаження об'єктів
+          "s3:DeleteObject"       # Видалення об'єктів
         ],
-        Resource = [
-          "arn:aws:s3:::your-bucket-name",       # Назва S3-бакета
-          "arn:aws:s3:::your-bucket-name/*"     # Об'єкти бакета
-        ]
+        Resource = "*"
       }
     ]
   })
